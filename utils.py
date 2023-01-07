@@ -67,7 +67,7 @@ def global_metrics(metrics, args):
     glob_met["jitter_acc_50p"]=  np.nanpercentile(metrics["Jitter"],50)
     glob_met["jitter_acc_90p"]=  np.nanpercentile(metrics["Jitter"],90)
     out = pd.DataFrame(glob_met, index=[0])
-    out.to_csv(args.video_root+args.vid_name[:-4]+"_global_metrics.csv")
+    out.to_csv(args.video_root+"/"+args.vid_name[:-4]+"_global_metrics.csv")
     return out
 
 
