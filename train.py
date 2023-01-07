@@ -1,5 +1,6 @@
 import argparse
 import collections
+import os
 
 import numpy as np
 
@@ -23,17 +24,19 @@ print('CUDA available: {}'.format(torch.cuda.is_available()))
 def main(args=None):
     parser = argparse.ArgumentParser(description='Simple training script for training a RetinaNet network.')
 
-    parser.add_argument('--dataset', help='Dataset type, must be one of csv or coco.')
+    parser.add_argument('--dataset', help='Dataset type, must be one of csv or coco.', default = 'csv')
     parser.add_argument('--coco_path', help='Path to COCO directory')
-    parser.add_argument('--csv_train', help='Path to file containing training annotations (see readme)')
-    parser.add_argument('--csv_classes', help='Path to file containing class list (see readme)')
-    parser.add_argument('--csv_val', help='Path to file containing validation annotations (optional, see readme)')
+    parser.add_argument('--csv_train', help='Path to file containing training annotations (see readme)', default = 'data/AVOS/detections/train.csv')
+    parser.add_argument('--csv_classes', help='Path to file containing class list (see readme)', default = 'data/AVOS/detections/hand_tool_class_names.csv')
+    parser.add_argument('--csv_val', help='Path to file containing validation annotations (optional, see readme)', default = 'data/AVOS/detections/val.csv')
 
     parser.add_argument('--depth', help='Resnet depth, must be one of 18, 34, 50, 101, 152', type=int, default=50)
     parser.add_argument('--epochs', help='Number of epochs', type=int, default=100)
-    parser.add_argument('--resume', help='Number of epochs', type=str, default=None)
+    parser.add_argument('--resume', help='Number of epochs', type=str, default='weights/surgery_old_model.pt')
+    parser.add_argument('--exp_name', help='Number of epochs', type=str, default='2023_1_1_AVOS_train')
 
     parser = parser.parse_args(args)
+    os.makedirs(f'weights/{parser.exp_name}', exist_ok =True)
 
     # Create the data loaders
     if parser.dataset == 'coco':
@@ -174,7 +177,7 @@ def main(args=None):
 
         scheduler.step(np.mean(epoch_loss))
 
-        torch.save(retinanet.module, '{}_retinanet_{}.pt'.format(parser.dataset, epoch_num))
+        torch.save(retinanet.module, f'weights/{parser.exp_name}/{parser.dataset}_retinanet_{epoch_num}.pt')
 
     retinanet.eval()
 
