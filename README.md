@@ -27,7 +27,18 @@ pip install pandas
 pip install pycocotools
 pip install opencv-python
 pip install requests
+pip install lap
+pip install scikit-image
+pip install opencv-python
+pip install matplotlib
+pip install tqdm
+pip install scipy
+```
 
+4) install a compatible torch
+	
+```
+pip install torch==1.9.0+cu102 torchvision==0.10.0+cu102 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
 ## Training

@@ -21,7 +21,7 @@ print('CUDA available: {}'.format(torch.cuda.is_available()))
 def get_args_parser():
     parser = argparse.ArgumentParser(description='Surgery Hand tracking on Video', add_help=False)
     ## general
-    parser.add_argument('--video_root', help='Dataset type, must be one of csv or coco.', type=str, default="video")
+    parser.add_argument('--video_root', help='Dataset type, must be one of csv or coco.', type=str, default="videos")
     parser.add_argument('--vid_name', help='Dataset type, must be one of csv or coco.', type=str, default="output.mp4")
     parser.add_argument('--viz', help='Dataset type, must be one of csv or coco.', type=bool, default=False)
     parser.add_argument('--coco_path', help='Path to COCO directory')
@@ -35,7 +35,7 @@ def get_args_parser():
     parser.add_argument('--use_gpu', default=True)
 
     ## detection model
-    parser.add_argument('--model', help='Path to model (.pt) file.', type=str, default="weights/csv_retinanet_98.pt")
+    parser.add_argument('--model', help='Path to model (.pt) file.', type=str, default="weights/bidmc_retinanet.pt")
     parser.add_argument('--num_classes', help='number of classes', type=int, default=4)
 
     ## bytracker
