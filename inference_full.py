@@ -196,6 +196,18 @@ def main(parser):
     return results
        
     
+def run_inference(args):
+    t1=time.time()
+    
+    results = main(args)
+
+    metrics  = extract_metrics(results, args)
+       
+    g_metrics = global_metrics(metrics, args)
+    
+    print(f'Total runtime: {time.time()-t1} [s]')
+    return metrics, g_metrics
+
     
 if __name__ == '__main__':
     t1=time.time()
