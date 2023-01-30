@@ -67,7 +67,7 @@ def global_metrics(metrics, args):
     glob_met["jitter_acc_50p"]=  np.nanpercentile(metrics["Jitter"],50)
     glob_met["jitter_acc_90p"]=  np.nanpercentile(metrics["Jitter"],90)
     out = pd.DataFrame(glob_met, index=[0])
-    out.to_csv(args.video_root+"/"+args.vid_name[:-4]+"_global_metrics.csv")
+    #out.to_csv(args.video_root+"/"+args.vid_name[:-4]+"_global_metrics.csv")
     return out
 
 
@@ -105,6 +105,7 @@ def create_video_with_plot(parser, metrics):
     fourcc = cv2.VideoWriter_fourcc(*'MP4V')
     output_video = cv2.VideoWriter("output.mp4", fourcc, frame_rate, (640, 480))
 
+    
     # define a function to update the plot
     def update(time):
         # update the marker on the plot

@@ -45,13 +45,20 @@ class InferenceDataset(Dataset):
         if largest_side * scale > max_side:
             scale = max_side / largest_side
             
-        self.height = int(height * scale)
-        self.width = int(width * scale)
+        self.height = int(round(height * scale ))
+        self.width = int(round(width * scale))
+        
+        self.pad_w = 32 - self.width%32
+        self.pad_h = 32 - self.height%32
+        
+        self.output_height = self.height + self.pad_h
+        self.output_width = self.width + self.pad_w
+        
         self.scale =scale
 
         self.Normalize =  transforms.Normalize(self.mean, self.std)
         self.Resize = transforms.Resize((self.height, self.width))
-
+        
         if not cap.isOpened():
             print('Error: could not open video file')
         else:
@@ -60,6 +67,7 @@ class InferenceDataset(Dataset):
             self.video_fps = int(cap.get(cv2.CAP_PROP_FPS))
             self.video_length = self.num_frames / self.video_fps
             print(f'Video length: {self.video_length:.2f} seconds')
+            print(f'resizing: ({self.height}, {self.width})')
         # Release the video capture object
         cap.release()
 
@@ -86,7 +94,9 @@ class InferenceDataset(Dataset):
                 frame = torch.from_numpy(frame / 255.)
                 frame = self.Normalize(frame)
                 frame = self.Resize(frame.permute(2, 0, 1))
-                frames.append(frame)
+                new_image = torch.zeros((3, self.height + self.pad_h, self.width + self.pad_w), dtype=torch.float32)
+                new_image[:, :self.height, :self.width] = frame
+                frames.append(new_image)
 
             else:
                 break

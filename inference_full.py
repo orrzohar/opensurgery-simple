@@ -23,11 +23,11 @@ def get_args_parser():
     ## general
     parser.add_argument('--video_root', help='Dataset type, must be one of csv or coco.', type=str, default="videos")
     parser.add_argument('--vid_name', help='Dataset type, must be one of csv or coco.', type=str, default="output.mp4")
-    parser.add_argument('--viz', help='Dataset type, must be one of csv or coco.', type=bool, default=False)
+    parser.add_argument('--viz', help='Dataset type, must be one of csv or coco.', type=bool, default=True)
     parser.add_argument('--coco_path', help='Path to COCO directory')
     parser.add_argument('--csv_classes', help='Path to file containing class list (see readme)', default='data/AVOS/detections/hand_tool_class_names.csv')
     parser.add_argument('--video_clip_length', default=20)
-    parser.add_argument('--num_workers', default=4)#4
+    parser.add_argument('--num_workers', default=4)
 
     parser.add_argument('--fps', default=13)
     parser.add_argument('--min_side', default=608)
@@ -122,7 +122,7 @@ def main(parser):
     if parser.viz:
         out_video = parser.video_root+"/" + parser.vid_name[:-4] + "_detections.mp4"
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-        video_tracked = cv2.VideoWriter(out_video, fourcc, parser.fps, (video_dataset.width, video_dataset.height))
+        video_tracked = cv2.VideoWriter(out_video, fourcc, parser.fps, (video_dataset.output_width, video_dataset.output_height))
         
     video_sampler = SequentialSampler(video_dataset)
     
